@@ -12,36 +12,95 @@
 <body>
   <main>
     <section>
-      <form id="addBill" onsubmit="submitBill()" onreset="resetBill()">
+      <aside>
+        <h2>记一笔</h2>
         <div>
           <label for="money">金额</label>
-          <input type="number" id="money">
+          <input type="number" id="money" value="">
         </div>
         <div>
           <label for="cls1">大类</label>
-          <input type="text" id="cls1">
+          <select id="cls1" name="cls1">
+            <option value="">--请选择一项--</option>
+          </select>
         </div>
         <div>
           <label for="cls2">小类</label>
-          <input type="text" id="cls2">
+          <select id="cls2" name="cls2">
+            <option value="">--请选择一项--</option>
+          </select>
         </div>
-        <button type="submit">Submit</button>
-      </form>
+        <button id="addBill">提交</button>
+        <button id='cancle'>重置</button>
+      </aside>
     </section>
 
   </main>
 </body>
-<script >
+<style>
+  #money {
+    width: 70%;
+  }
+  #cls2,
+  #cls1 {
+    width: 80%;
+  }
+</style>
+<script>
+  // get data
+  const cls1 = ["食品", "饮料", "衣服"];
+  const cls2 = [
+    ["早餐", "午餐"],
+    ["奶茶", "可乐"],
+    ["上衣", "鞋子"],
+  ];
 
-  function submitBill(){
-  const money = document.getElementById("money").value;
-  const cls1 = document.getElementById("cls1").value;
-  alert(money + " " +  cls1 + config);
-  return true;
-}
-function resetBill(){
+  // get element
+  const addBill = document.getElementById("addBill");
+  const cancle = document.getElementById("cancle");
+  const cls1Elem = document.getElementById("cls1");
+  const cls2Elem = document.getElementById("cls2");
 
-}
+  // set data & set listening & store data
+  addBill.addEventListener("click", submitBillAction);
+  cancle.addEventListener("click", resetBill);
+
+  // set data
+  setCls(cls1Elem, cls1);
+  cls1Elem.addEventListener("change", (e) => {
+    const cls1Val = cls1Elem.value;
+    setCls(cls2Elem, cls2[cls1Val]);
+  });
+
+
+  // some function
+  function setCls(elem, clss) {
+    clss.forEach((cls, idx) => {
+      let option = `<option value="${idx}">${cls}</option>`;
+      elem.innerHTML += option;
+    })
+
+  }
+
+  function submitBillAction() {
+    const money = document.getElementById("money").value;
+    const cls1Val = document.getElementById("cls1").value;
+    const cls2Val = document.getElementById("cls2").value;
+    if (money == "" || cls1Val == "" || cls2Val == "") {
+      console.log('请填完整');
+    }
+    console.log(`money: ${money}\ncls1: ${cls1[cls1Val]}\ncls2: ${cls2[cls1Val][cls2Val]}`);
+    resetBill();
+  }
+
+  function resetBill() {
+    const money = document.getElementById("money");
+    const cls1 = document.getElementById("cls1");
+    const cls2 = document.getElementById("cls2");
+    money.value = "";
+    cls1.value = "";
+    cls2.value = "";
+  }
 </script>
 
 <script src="./renderer.js"></script>
