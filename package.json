@@ -9,7 +9,9 @@
   "author": "Arnaud",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^13.2.3",
+    "electron": "^13.2.3"
+  },
+  "dependencies": {
     "js-yaml": "^4.1.0"
   }
 }

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'"> -->
   <title>Hello World!</title>
   <link rel="stylesheet" href='./static/css/mvp.css'>
 </head>
@@ -12,9 +12,38 @@
 <body>
   <main>
     <section>
-      <aside>Hello</aside>
+      <form id="addBill" onsubmit="submitBill()" onreset="resetBill()">
+        <div>
+          <label for="money">金额</label>
+          <input type="number" id="money">
+        </div>
+        <div>
+          <label for="cls1">大类</label>
+          <input type="text" id="cls1">
+        </div>
+        <div>
+          <label for="cls2">小类</label>
+          <input type="text" id="cls2">
+        </div>
+        <button type="submit">Submit</button>
+      </form>
     </section>
+
   </main>
 </body>
+<script >
+
+  function submitBill(){
+  const money = document.getElementById("money").value;
+  const cls1 = document.getElementById("cls1").value;
+  alert(money + " " +  cls1 + config);
+  return true;
+}
+function resetBill(){
+
+}
+</script>
+
 <script src="./renderer.js"></script>
+
 </html>
