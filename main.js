@@ -12,7 +12,8 @@ function createWindow() {
         width: 800,
         height: 600,
         webPreferences: {
-            preload: path.join(__dirname, 'preload.js')
+            preload: path.join(__dirname, 'preload.js'),
+            nodeIntegration: true
         }
     })
 
@@ -20,7 +21,7 @@ function createWindow() {
     mainWindow.loadFile('index.html')
 
     // Open the DevTools.
-    // mainWindow.webContents.openDevTools()
+    mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
@@ -42,3 +43,30 @@ app.whenReady().then(() => {
 app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') app.quit()
 })
+
+
+const cls1 = ["食品", "饮料", "衣服"];
+const cls2 = [
+    ["早餐", "午餐"],
+    ["奶茶", "可乐"],
+    ["上衣", "鞋子"],
+];
+
+const { ipcMain } = require("electron")
+ipcMain.handle("cls", (e, args) => {
+    const result = {
+        cls1: cls1,
+        cls2: cls2,
+    }
+    return result
+})
+
+
+
+ipcMain.handle('addBill', (e, args) => {
+    const billItem = args.billItem;
+    console.log(billItem);
+
+    // write in file
+    return true;
+});
