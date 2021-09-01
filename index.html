@@ -16,7 +16,7 @@
         <h2>记一笔</h2>
         <div>
           <label for="money">金额</label>
-          <input type="number" id="money" value="">
+          <input type="number" id="money" min=0 placeholder="0" value="">
         </div>
         <div>
           <label for="cls1">大类</label>
@@ -30,11 +30,14 @@
             <option value="">--请选择一项--</option>
           </select>
         </div>
-        <button id="addBill">提交</button>
-        <button id='cancle'>重置</button>
+        <div>
+          <label for="date">日期</label>
+          <input type="date" id="date" name="date">
+        </div>
+        <button type="submit" id="addBill">提交</button>
+        <button type="reset" id="cancle">重置</button>
       </aside>
     </section>
-
   </main>
 </body>
 <style>

@@ -25,8 +25,11 @@ const addBill = document.getElementById("addBill");
 const cancle = document.getElementById("cancle");
 const cls1Elem = document.getElementById("cls1");
 const cls2Elem = document.getElementById("cls2");
+const dateElem = document.getElementById("date");
 
 // set data & set listening & store data
+dateElem.value = getNowDate();
+
 addBill.addEventListener("click", submitBillAction);
 cancle.addEventListener("click", resetBill);
 
@@ -46,19 +49,19 @@ function setCls(elem, clss) {
 }
 
 function submitBillAction() {
-    const money = document.getElementById("money").value;
-    const cls1Val = document.getElementById("cls1").value;
-    const cls2Val = document.getElementById("cls2").value;
-    if (money == "" || cls1Val == "" || cls2Val == "") {
+    const moneyElem = document.getElementById("money").value;
+    const cls1ValElem = document.getElementById("cls1").value;
+    const cls2ValElem = document.getElementById("cls2").value;
+    const dateValElem = document.getElementById("date").value;
+    if (moneyElem == "" || cls1ValElem == "" || cls2ValElem == "") {
         console.log('请填完整');
         return;
     }
-    console.log(`money: ${money}\ncls1: ${cls1[cls1Val]}\ncls2: ${cls2[cls1Val][cls2Val]}`);
-    const date = new Date();
+    const date = new Date(dateValElem);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    const billItem = new BillItem(year, month, day, money, cls1Val, cls2Val);
+    const billItem = new BillItem(year, month, day, moneyElem, cls1ValElem, cls2ValElem);
     ipcRenderer.invoke('addBill', { billItem: billItem }).then(res => {
         if (res === true) {
             resetBill();
@@ -70,9 +73,26 @@ function resetBill() {
     const money = document.getElementById("money");
     const cls1 = document.getElementById("cls1");
     const cls2 = document.getElementById("cls2");
+    const date = document.getElementById("date");
     money.value = "";
     cls1.value = "";
     cls2.value = "";
+    date.value = getNowDate();
+}
+
+function getNowDate() {
+    const date = new Date();
+    const now = formatDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
+    return now;
+}
+
+function formatDate(year, month, day) {
+    let yearStr = year.toString();
+    let monthStr = month.toString();
+    let dayStr = day.toString();
+    monthStr = monthStr.length == 2 ? monthStr : "0" + monthStr;
+    dayStr = dayStr.length == 2 ? dayStr : "0" + dayStr;
+    return `${yearStr}-${monthStr}-${dayStr}`;
 }
 
 
