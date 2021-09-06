@@ -1,39 +1,41 @@
 const sqlite3 = require('sqlite3').verbose();
 
-
-const db = new sqlite3.Database('db.db');
+const db = new sqlite3.Database('data.db');
 
 function initDb() {
+    const createTable = `
+        CREATE TABLE IF NOT EXISTS BILL (
+            ID          INTEGER     PRIMARY KEY AUTOINCREMENT,
+            YEAR        INTEGER     NOT NULL,
+            MONTH       INTEGER     NOT NULL,
+            DAY         INTEGER     NOT NULL,
+            CLS1        TEXT        NOT NULL,
+            CLS2        TEXT        NOT NULL,
+            MONEY       DECIAML,
+            DETAIL      TEXT,
+            DATE_TIME   TEXT        NOT NULL
+        )
+    `;
     db.serialize(() => {
-        db.run(`CREATE TABLE IF NOT EXISTS bill (
-                    year INT,
-                    month INT,
-                    day INT,
-                    cls1 TEXT,
-                    cls2 TEXT,
-                    money DECIAML,
-                    detail TEXT
-                )`);
+        db.run(createTable);
     });
 }
 
 function insertBill(bills) {
+    const insertStmt = `
+        INSERT INTO BILL
+        (YEAR, MONTH, DAY, CLS1, CLS2, MONEY, DETAIL, DATE_TIME)
+        VALUES
+        (?, ?, ?, ?, ?, ?, ?, ?)
+    `
+    const stmt = db.prepare(insertStmt);
     db.serialize(() => {
-        let stmt = db.prepare(`INSERT INTO bill VALUES
-                            (?, ?, ?, ?, ?, ?, ?)`);
         bills.forEach(bill => {
-            stmt.run(
-                bill.year,
-                bill.month,
-                bill.day,
-                bill.cls1,
-                bill.cls2,
-                bill.money,
-                bill.detail,
-            );
-        });
-        stmt.finalize()
+            stmt.run(bill.year, bill.month, bill.day, bill.cls1, bill.cls2, bill.money, bill.detail, bill.dateTime);
+        })
     });
+
+    stmt.finalize()
 }
 
 exports.initDb = initDb;

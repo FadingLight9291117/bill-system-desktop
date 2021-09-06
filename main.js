@@ -9,8 +9,8 @@ const { insertBill } = require('./data')
 function createWindow() {
     // Create the browser window.
     const mainWindow = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1000,
+        height: 800,
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: true
@@ -45,30 +45,23 @@ app.on('window-all-closed', function () {
 })
 
 // read yaml
-let config = yaml.load(fs.readFileSync('./config/config.yaml', 'utf8'))
+const config = yaml.load(fs.readFileSync('./config/config.yaml', 'utf8'));
 // 设置账单item类别
-let billClass = new Map(Object.entries(config.billClass));
-const cls1 = [];
-const cls2 = [];
-for (let i of billClass.keys()) {
-    cls1.push(i);
-}
-for (let i of billClass.values()) {
-    cls2.push(i);
-}
+const billClass = config.billClass;
+const cls1 = Object.keys(billClass);
+const cls2 = Object.values(billClass);
 
 ipcMain.handle("cls", (e, args) => {
-    const result = {
+    return {
         cls1: cls1,
         cls2: cls2,
     }
-    return result
-})
-
-
+});
 
 ipcMain.handle('addBill', (e, args) => {
     const billItem = args.billItem;
+    const dateTime = new Date().toLocaleString();
+    billItem.dateTime = dateTime;
     insertBill([billItem]);
 
     return true;
