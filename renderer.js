@@ -49,19 +49,22 @@ function setCls(elem, clss) {
 }
 
 function submitBillAction() {
-    const moneyElem = document.getElementById("money").value;
-    const cls1ValElem = document.getElementById("cls1").value;
-    const cls2ValElem = document.getElementById("cls2").value;
-    const dateValElem = document.getElementById("date").value;
-    if (moneyElem == "" || cls1ValElem == "" || cls2ValElem == "") {
+    const moneyVal = document.getElementById("money").value;
+    const cls1Idx = document.getElementById("cls1").value;
+    const cls2Idx = document.getElementById("cls2").value;
+    const dateVal = document.getElementById("date").value;
+    const detailVal = document.getElementById('detail').value;
+    if (moneyVal == "" || cls1Idx == "" || cls2Idx == "") {
         console.log('请填完整');
         return;
     }
-    const date = new Date(dateValElem);
+    const date = new Date(dateVal);
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();
-    const billItem = new BillItem(year, month, day, moneyElem, cls1ValElem, cls2ValElem);
+    const cls1Val = cls1[cls1Idx];
+    const cls2Val = cls2[cls1Idx][cls2Idx];
+    const billItem = new BillItem(year, month, day, moneyVal, cls1Val, cls2Val, detailVal);
     ipcRenderer.invoke('addBill', { billItem: billItem }).then(res => {
         if (res === true) {
             resetBill();

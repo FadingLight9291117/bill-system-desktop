@@ -12,6 +12,7 @@
     "electron": "^13.2.3"
   },
   "dependencies": {
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "sqlite3": "^5.0.2"
   }
 }

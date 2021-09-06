@@ -1,10 +1,10 @@
 // Modules to control application life and create native browser window
-const path = require('path')
-
+const path = require('path');
+const fs = require('fs');
+const yaml = require('js-yaml');
 const { app, BrowserWindow } = require('electron')
-
-const { config } = require('./config');
-
+const { ipcMain } = require("electron")
+const { insertBill } = require('./data')
 
 function createWindow() {
     // Create the browser window.
@@ -44,15 +44,19 @@ app.on('window-all-closed', function () {
     if (process.platform !== 'darwin') app.quit()
 })
 
+// read yaml
+let config = yaml.load(fs.readFileSync('./config/config.yaml', 'utf8'))
+// 设置账单item类别
+let billClass = new Map(Object.entries(config.billClass));
+const cls1 = [];
+const cls2 = [];
+for (let i of billClass.keys()) {
+    cls1.push(i);
+}
+for (let i of billClass.values()) {
+    cls2.push(i);
+}
 
-const cls1 = ["食品", "饮料", "衣服"];
-const cls2 = [
-    ["早餐", "午餐"],
-    ["奶茶", "可乐"],
-    ["上衣", "鞋子"],
-];
-
-const { ipcMain } = require("electron")
 ipcMain.handle("cls", (e, args) => {
     const result = {
         cls1: cls1,
@@ -65,8 +69,7 @@ ipcMain.handle("cls", (e, args) => {
 
 ipcMain.handle('addBill', (e, args) => {
     const billItem = args.billItem;
-    console.log(billItem);
+    insertBill([billItem]);
 
-    // write in file
     return true;
 });
