@@ -26,12 +26,14 @@ const cancle = document.getElementById("cancle");
 const cls1Elem = document.getElementById("cls1");
 const cls2Elem = document.getElementById("cls2");
 const dateElem = document.getElementById("date");
+const syncElem = document.getElementById("sync");
 
 // set data & set listening & store data
 dateElem.value = getNowDate();
 
 addBill.addEventListener("click", submitBillAction);
 cancle.addEventListener("click", resetBill);
+syncElem.addEventListener('click', syncBills);
 
 cls1Elem.addEventListener("change", (e) => {
     const cls1Val = cls1Elem.value;
@@ -83,6 +85,10 @@ function resetBill() {
     cls2.value = "";
     date.value = getNowDate();
     detail.value = "";
+}
+
+function syncBills() {
+    ipcRenderer.invoke('sync');
 }
 
 function getNowDate() {

@@ -1,10 +1,10 @@
 remote:
   mongo:
     url: aliyun
-    port: 27017
+    port: 30017
     username: root
     password: 123
-    database: bill
+    database: bill-sys
 
 billClass:
   食品: [食堂三餐, 外卖, 奶茶, 外出吃饭, 饮料, 零食, 水果]

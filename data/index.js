@@ -17,7 +17,7 @@ function initDb() {
             MONEY       DECIAML     DEFAULT 0,
             DETAIL      TEXT        DEFAULT "",
             DATE_TIME   TEXT        NOT NULL,
-            IS_SYNC     INTEGER     DEFAULT 0
+            IS_SYNC     INTEGER     DEFAU
         )
     `;
     db.run(createTable);
@@ -25,7 +25,7 @@ function initDb() {
 
 function insertBill(bills) {
     const insertStmt = `
-        INSERT INTO BILL
+        INSERT INTO BILLS
         (YEAR, MONTH, DAY, CLS1, CLS2, MONEY, DETAIL, DATE_TIME)
         VALUES
         (?, ?, ?, ?, ?, ?, ?, ?)
@@ -49,21 +49,23 @@ function insertBill(bills) {
     return bills.length;
 }
 
-function findNotSync() {
-    const bills = [];
+// !!!注意注意
+async function findNotSync() {
     const quaryStmt = `
         SELECT *
         FROM BILL
         WHERE
         IS_SYNC=0;
     `;
-    db.each(quaryStmt, (err, row) => {
-        bills.push(row);
+    const bills = await new Promise((resolve) => {
+        db.all(quaryStmt, (err, rows) => {
+            resolve(rows);
+        });
     });
     return bills;
 }
 
-function billsSync(bills) {
+function setSync(bills) {
     const updateSql = `
         UPDATE BILL
         SET IS_SYNC=1
@@ -84,4 +86,4 @@ function billsSync(bills) {
 exports.initDb = initDb;
 exports.insertBill = insertBill;
 exports.findNotSync = findNotSync;
-exports.billsSync = billsSync;
+exports.setSync = setSync;

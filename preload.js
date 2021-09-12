@@ -4,9 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
 const { contextBridge, ipcRenderer } = require('electron')
-const { initDb, findNotSync } = require('./data')
+const { initDb } = require('./data')
 
 contextBridge.exposeInMainWorld('ipcRenderer', ipcRenderer);
 
 initDb();
-console.log(findNotSync());

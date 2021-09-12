@@ -5,6 +5,7 @@ const yaml = require('js-yaml');
 const { app, BrowserWindow } = require('electron')
 const { ipcMain } = require("electron")
 const { insertBill } = require('./data')
+const remote = require('./remote');
 
 function createWindow() {
     // Create the browser window.
@@ -65,4 +66,10 @@ ipcMain.handle('addBill', (e, args) => {
     insertBill([billItem]);
 
     return true;
+});
+
+ipcMain.handle('sync', (e, args) => {
+    remote.mainSync()
+        .then(result => console.log(`${result} bills sync done.`))
+        .catch(e => console.log(e));
 });
