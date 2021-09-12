@@ -77,10 +77,12 @@ function resetBill() {
     const cls1 = document.getElementById("cls1");
     const cls2 = document.getElementById("cls2");
     const date = document.getElementById("date");
+    const detail = document.getElementById("detail");
     money.value = "";
     cls1.value = "";
     cls2.value = "";
     date.value = getNowDate();
+    detail.value = "";
 }
 
 function getNowDate() {
